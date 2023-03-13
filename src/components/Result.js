@@ -88,7 +88,7 @@ function Result({ info, goBack }) {
           </div>
         </div>
         <div className="text-center text-5xl mb-16">
-          {parseInt(info.main.temp)} C
+          {parseInt(info.main.temp - 273)} C
         </div>
         {/* card bottom */}
         <div className="mx-auto flex flex-col gap-y-4 bg-teal-600 h-[5rem] rounded-b-lg divide-x divide-blue-200">
@@ -110,7 +110,7 @@ function Result({ info, goBack }) {
               <div className="flex">
                 Feels like
                 <div className="flex ml-2">
-                  {parseInt(info.main.feels_like)}
+                  {parseInt(info.main.feels_like - 273)}
                   <TbTemperatureCelsius />
                 </div>
               </div>

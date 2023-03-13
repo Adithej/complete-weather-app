@@ -1,14 +1,13 @@
 import React, { useState } from "react";
 import Result from "./Result";
 import { apiFetchLoation } from "../api";
-// import axios
-import axios from "axios";
+
 import { IoMdSearch } from "react-icons/io";
 
 // api key
-const APIkey = "bcf2048bc3be154bded8f277f580ba2e";
-const { REACT_APIkey } = process.env;
-console.log("env", process.env.REACT_APP_API_KEY);
+// const APIkey = "bcf2048bc3be154bded8f277f580ba2e";
+// const { REACT_APIkey } = process.env;
+// console.log("env", process.env.REACT_APP_API_KEY);
 function Home() {
   const [data, setData] = useState(null);
   const [location, setLocation] = useState("");
@@ -60,10 +59,10 @@ function Home() {
     }
   };
 
-  async function fetchCurrent(position) {
-    const { latitude, longitude } = position.coords;
-    // let api = `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&units=metric&appid=${APIkey}`;
-  }
+  // async function fetchCurrent(position) {
+  //   const { latitude, longitude } = position.coords;
+  //   // let api = `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&units=metric&appid=${APIkey}`;
+  // }
   function getCurrentLocation(e) {
     e.preventDefault();
     if (loading) return;
@@ -95,7 +94,7 @@ function Home() {
                 <div className="w-3/4 flex items-center justify-center mb-4">
                   <input
                     placeholder={errorMsg}
-                    className="h-10 w-3/4 px-6 bg-pink-200"
+                    className="h-10 w-3/4 px-6 bg-red-300"
                   />
                 </div>
               )}
