@@ -95,7 +95,7 @@ function Result({ info, goBack }) {
           <div className="flex justify-between">
             <div className="flex items-center gap-x-2 mt-6">
               {/* icon */}
-              <div className="text-[20px]">
+              <div className="text-[20px] ml-4">
                 <IoIosWater />
               </div>
               <div>
@@ -109,7 +109,7 @@ function Result({ info, goBack }) {
               </div>
               <div className="flex">
                 Feels like
-                <div className="flex ml-2">
+                <div className="flex ml-2 mr-4">
                   {parseInt(info.main.feels_like - 273)}
                   <TbTemperatureCelsius />
                 </div>

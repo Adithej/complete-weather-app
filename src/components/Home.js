@@ -125,7 +125,7 @@ function Home() {
               <button
                 onClick={(e) => getCurrentLocation(e)}
                 disabled={loading}
-                className="h-10 w-96 px-6 text-indigo-100 transition-colors duration-150  focus:shadow-outline  bg-teal-600"
+                className="h-10 w-[26rem] px-6 text-indigo-100 transition-colors duration-150  focus:shadow-outline  bg-teal-600"
               >
                 Use Device Location
               </button>
