@@ -1,14 +1,16 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
-import { useAuth } from "../context/auth";
+import { useAuth } from "../hooks/useAuth";
 
 function Register(props) {
   const [email, setEmail] = useState("");
   const [pass, setPass] = useState("");
   const [name, setName] = useState("");
-  const [password, setPassword] = useState("");
-  const { setAuthTokens } = useAuth();
+  const [password, setConPass] = useState("");
+  const [phone, setPhone] = useState("");
+  const [errors, setErrors] = useState({ email: "" });
+  // const { setAuthTokens } = useAuth();
   // const [isError, setIsError] = useState(false);
 
   const handleSubmit = (e) => {
@@ -16,17 +18,26 @@ function Register(props) {
     console.log(email);
   };
 
+  const { login } = useAuth();
+
   function postRegister() {
     axios
       .post("https://apingweb.com/api/register", {
         name,
         email,
-        password,
+        phone,
+        password: pass,
+        password_confirmation: password,
       })
       .then((result) => {
         if (result.status === 200) {
-          setAuthTokens(result.data);
+          // setAuthTokens(result.data);
           // setLoggedIn(true);
+          login({
+            name: name,
+            email: email,
+            token: result.data.token,
+          });
         } else {
           // setIsError(true);
         }
@@ -74,10 +85,27 @@ function Register(props) {
               name="email"
               className="block w-full px-4 py-2 mt-2 text-purple-700 bg-white border rounded-md focus:border-purple-400 focus:ring-purple-300 focus:outline-none focus:ring focus:ring-opacity-40"
             />
+            {errors.email && errors.email}
           </div>
           <div className="mb-2">
             <label
-              htmlFor="password"
+              htmlFor="phone"
+              className="block text-sm font-semibold text-gray-800"
+            >
+              Phone
+            </label>
+            <input
+              type="tel"
+              value={phone}
+              onChange={(e) => setPhone(e.target.value)}
+              id="phone"
+              name="phone"
+              className="block w-full px-4 py-2 mt-2 text-purple-700 bg-white border rounded-md focus:border-purple-400 focus:ring-purple-300 focus:outline-none focus:ring focus:ring-opacity-40"
+            />
+          </div>
+          <div className="mb-2">
+            <label
+              htmlFor="email"
               className="block text-sm font-semibold text-gray-800"
             >
               Password
@@ -91,15 +119,32 @@ function Register(props) {
               className="block w-full px-4 py-2 mt-2 text-purple-700 bg-white border rounded-md focus:border-purple-400 focus:ring-purple-300 focus:outline-none focus:ring focus:ring-opacity-40"
             />
           </div>
+          <div className="mb-2">
+            <label
+              htmlFor="password"
+              className="block text-sm font-semibold text-gray-800"
+            >
+              Confirm Password
+            </label>
+            <input
+              type="password"
+              value={password}
+              onChange={(e) => setConPass(e.target.value)}
+              id="password"
+              name="password"
+              className="block w-full px-4 py-2 mt-2 text-purple-700 bg-white border rounded-md focus:border-purple-400 focus:ring-purple-300 focus:outline-none focus:ring focus:ring-opacity-40"
+            />
+          </div>
           {/* <a href="#" className="text-xs text-purple-600 hover:underline">
             Forget Password?
           </a> */}
           <div className="mt-6">
             <button
+              onClick={postRegister}
               type="submit"
               className="w-full px-4 py-2 tracking-wide text-white transition-colors duration-200 transform bg-purple-700 rounded-md hover:bg-purple-600 focus:outline-none focus:bg-purple-600"
             >
-              Login
+              Register
             </button>
           </div>
         </form>

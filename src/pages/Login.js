@@ -1,16 +1,16 @@
 import React, { useState } from "react";
-import { Link, Navigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import axios from "axios";
-import { useAuth } from "../context/auth";
-
+import { useAuth } from "../hooks/useAuth";
+import { LoginSchema } from "../components/LoginSchema";
 function Login(props) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isError, setIsError] = useState(false);
-  const [userName, setUserName] = useState("");
   const [isLoggedIn, setLoggedIn] = useState(false);
-  const { setAuthTokens } = useAuth();
-  const referer = props.location.state.referer || "/";
+  const [errors, setErrors] = useState({ email: "", password: "" });
+
+  const { login } = useAuth();
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -25,7 +25,13 @@ function Login(props) {
       })
       .then((result) => {
         if (result.status === 200) {
-          setAuthTokens(result.data);
+          // setAuthTokens(result.data);
+          login({
+            name: result.data.result.name,
+            email: result.data.result.email,
+            token: result.data.token,
+          });
+          console.log(result);
           setLoggedIn(true);
         } else {
           setIsError(true);
@@ -36,9 +42,9 @@ function Login(props) {
       });
   }
 
-  if (isLoggedIn) {
-    return <Navigate to={referer} />;
-  }
+  // if (isLoggedIn) {
+  //   return <Redirect to={referer} />;
+  // }
 
   return (
     <div className="relative flex flex-col justify-center min-h-screen overflow-hidden">
@@ -62,6 +68,7 @@ function Login(props) {
               onChange={(e) => setEmail(e.target.value)}
               className="block w-full px-4 py-2 mt-2 text-purple-700 bg-white border rounded-md focus:border-purple-400 focus:ring-purple-300 focus:outline-none focus:ring focus:ring-opacity-40"
             />
+            {errors.email && LoginSchema}
           </div>
           <div className="mb-2">
             <label
@@ -83,8 +90,11 @@ function Login(props) {
             Forget Password?
           </a> */}
           <div className="mt-6">
-            <button className="w-full px-4 py-2 tracking-wide text-white transition-colors duration-200 transform bg-purple-700 rounded-md hover:bg-purple-600 focus:outline-none focus:bg-purple-600">
-              Login onClick={postLogin}
+            <button
+              onClick={postLogin}
+              className="w-full px-4 py-2 tracking-wide text-white transition-colors duration-200 transform bg-purple-700 rounded-md hover:bg-purple-600 focus:outline-none focus:bg-purple-600"
+            >
+              Login
             </button>
           </div>
         </form>
@@ -96,9 +106,8 @@ function Login(props) {
             Sign up
           </a> */}
           <Link
-            to="register"
+            to="/register"
             className="font-medium text-purple-600 hover:underline"
-            onClick={() => props.onFormSwitch("register")}
           >
             Register here.
           </Link>
