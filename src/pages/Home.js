@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import Result from "./Result";
+import Result from "../components/Result";
 import { apiFetchLoation } from "../api";
-
+import { useAuth } from "../hooks/useAuth";
 import { IoMdSearch } from "react-icons/io";
 
 // api key
@@ -15,6 +15,8 @@ function Home() {
   const [loading, setLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
   const [tab, setTab] = useState("Home");
+
+  const { logout } = useAuth();
 
   const handleInput = (e) => {
     setInputValue(e.target.value);
@@ -131,6 +133,15 @@ function Home() {
               </button>
             </div>
           </form>
+          <div className="flex flex-row justify-center items-center mt-6">
+            <button
+              onClick={logout}
+              disabled={loading}
+              className="h-10 w-[26rem] px-6 text-indigo-100 transition-colors duration-150  focus:shadow-outline  bg-red-600"
+            >
+              Log Out
+            </button>
+          </div>
         </div>
       )}
       {tab === "result" && <Result info={data} goBack={() => setTab("Home")} />}
