@@ -10,6 +10,7 @@ function Register(props) {
   const [password, setConPass] = useState("");
   const [phone, setPhone] = useState("");
   const [errors, setErrors] = useState({ email: "" });
+  const [loading, setLoading] = useState(false);
   // const { setAuthTokens } = useAuth();
   // const [isError, setIsError] = useState(false);
 
@@ -31,6 +32,8 @@ function Register(props) {
       })
       .then((result) => {
         if (result.status === 200) {
+          if (loading) return;
+          setLoading(true);
           // setAuthTokens(result.data);
           // setLoggedIn(true);
           login({
@@ -66,6 +69,7 @@ function Register(props) {
               value={name}
               name="name"
               onChange={(e) => setName(e.target.value)}
+              disabled={loading}
               id="name"
               className="block w-full px-4 py-2 mt-2 text-purple-700 bg-white border rounded-md focus:border-purple-400 focus:ring-purple-300 focus:outline-none focus:ring focus:ring-opacity-40"
             />
@@ -81,6 +85,7 @@ function Register(props) {
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
+              disabled={loading}
               id="email"
               name="email"
               className="block w-full px-4 py-2 mt-2 text-purple-700 bg-white border rounded-md focus:border-purple-400 focus:ring-purple-300 focus:outline-none focus:ring focus:ring-opacity-40"
@@ -98,6 +103,7 @@ function Register(props) {
               type="tel"
               value={phone}
               onChange={(e) => setPhone(e.target.value)}
+              disabled={loading}
               id="phone"
               name="phone"
               className="block w-full px-4 py-2 mt-2 text-purple-700 bg-white border rounded-md focus:border-purple-400 focus:ring-purple-300 focus:outline-none focus:ring focus:ring-opacity-40"
@@ -114,6 +120,7 @@ function Register(props) {
               type="password"
               value={pass}
               onChange={(e) => setPass(e.target.value)}
+              disabled={loading}
               id="password"
               name="password"
               className="block w-full px-4 py-2 mt-2 text-purple-700 bg-white border rounded-md focus:border-purple-400 focus:ring-purple-300 focus:outline-none focus:ring focus:ring-opacity-40"
@@ -130,6 +137,7 @@ function Register(props) {
               type="password"
               value={password}
               onChange={(e) => setConPass(e.target.value)}
+              disabled={loading}
               id="password"
               name="password"
               className="block w-full px-4 py-2 mt-2 text-purple-700 bg-white border rounded-md focus:border-purple-400 focus:ring-purple-300 focus:outline-none focus:ring focus:ring-opacity-40"
@@ -141,6 +149,7 @@ function Register(props) {
           <div className="mt-6">
             <button
               onClick={postRegister}
+              disabled={loading}
               type="submit"
               className="w-full px-4 py-2 tracking-wide text-white transition-colors duration-200 transform bg-purple-700 rounded-md hover:bg-purple-600 focus:outline-none focus:bg-purple-600"
             >
