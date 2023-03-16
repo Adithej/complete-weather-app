@@ -8,7 +8,6 @@ import Login from "./pages/Login";
 import Home from "./pages/Home";
 import Register from "./pages/Register";
 import { ProtectedLayout } from "./components/ProtectedLayout";
-// import { HomeLayout } from "./components/HomeLayout";
 import { AuthLayout } from "./components/AuthLayout";
 
 // ideally this would be an API call to server to get logged in user data
