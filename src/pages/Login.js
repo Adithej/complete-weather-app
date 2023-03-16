@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import { useAuth } from "../hooks/useAuth";
 import { LoginSchema } from "../components/LoginSchema";
+
 function Login(props) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -42,6 +43,11 @@ function Login(props) {
       });
   }
 
+  const onUpadteField = (e) => {
+    const valueSet = e.target.value;
+    setEmail(valueSet);
+  };
+
   // if (isLoggedIn) {
   //   return <Redirect to={referer} />;
   // }
@@ -65,10 +71,10 @@ function Login(props) {
               id="email"
               name="email"
               value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              onChange={onUpadteField}
               className="block w-full px-4 py-2 mt-2 text-purple-700 bg-white border rounded-md focus:border-purple-400 focus:ring-purple-300 focus:outline-none focus:ring focus:ring-opacity-40"
             />
-            {errors.email && LoginSchema}
+            {}
           </div>
           <div className="mb-2">
             <label
