@@ -1,13 +1,17 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Result from "../components/Result";
 import { apiFetchLoation } from "../api";
-import { useAuth } from "../hooks/useAuth";
+import { logout } from "../slice/auth";
+// import { useAuth } from "../hooks/useAuth";
 import { IoMdSearch } from "react-icons/io";
+import { useNavigate } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
 
 // api key
 // const APIkey = "bcf2048bc3be154bded8f277f580ba2e";
 // const { REACT_APIkey } = process.env;
 // console.log("env", process.env.REACT_APP_API_KEY);
+
 function Home() {
   const [data, setData] = useState(null);
   const [location, setLocation] = useState("");
@@ -15,8 +19,18 @@ function Home() {
   const [loading, setLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
   const [tab, setTab] = useState("Home");
+  const { user: currentUser } = useSelector((state) => state.auth);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
 
-  const { logout } = useAuth();
+  // const { logout } = useAuth();
+
+  useEffect(() => {
+    if (!currentUser) {
+      navigate("/login");
+    } else {
+    }
+  }, [currentUser]);
 
   const handleInput = (e) => {
     setInputValue(e.target.value);
@@ -60,6 +74,10 @@ function Home() {
       setErrorMsg("error fetching data");
     }
   };
+
+  function handleLogout() {
+    dispatch(logout());
+  }
 
   // async function fetchCurrent(position) {
   //   const { latitude, longitude } = position.coords;
@@ -135,7 +153,7 @@ function Home() {
           </form>
           <div className="flex flex-row justify-center items-center mt-6">
             <button
-              onClick={logout}
+              onClick={handleLogout}
               disabled={loading}
               className="h-10 w-[26rem] px-6 text-indigo-100 transition-colors duration-150  focus:shadow-outline  bg-red-600"
             >
