@@ -1,52 +1,53 @@
 import React, { useState } from "react";
-import axios from "axios";
-import { Link } from "react-router-dom";
-import { useAuth } from "../hooks/useAuth";
+import { Link, Navigate, useNavigate } from "react-router-dom";
+// import { useAuth } from "../hooks/useAuth";
+import { useDispatch, useSelector } from "react-redux";
+import { register } from "../slice/auth";
 
 function Register(props) {
   const [email, setEmail] = useState("");
-  const [pass, setPass] = useState("");
+  const [password, setPass] = useState("");
   const [name, setName] = useState("");
-  const [password, setConPass] = useState("");
+  const [password_confirmation, setConPass] = useState("");
   const [phone, setPhone] = useState("");
+  const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState({ email: "" });
-  // const { setAuthTokens } = useAuth();
-  // const [isError, setIsError] = useState(false);
+
+  const [successful, setSuccessful] = useState(false);
+  let navigate = useNavigate();
+  const { isLoggedIn } = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
+
+  if (isLoggedIn) {
+    return <Navigate to="/" />;
+  }
+
+  const handleRegister = () => {
+    setSuccessful(false);
+
+    dispatch(
+      register({
+        name: name,
+        email: email,
+        phone: phone,
+        password: password,
+        password_confirmation: password_confirmation,
+      })
+    )
+      .unwrap()
+      .then(() => {
+        setSuccessful(true);
+        // window.location.reload();
+      })
+      .catch(() => {
+        setSuccessful(false);
+      });
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(email);
+    // console.log(email);
   };
-
-  const { login } = useAuth();
-
-  function postRegister() {
-    axios
-      .post("https://apingweb.com/api/register", {
-        name,
-        email,
-        phone,
-        password: pass,
-        password_confirmation: password,
-      })
-      .then((result) => {
-        if (result.status === 200) {
-          // setAuthTokens(result.data);
-          // setLoggedIn(true);
-          login({
-            name: name,
-            email: email,
-            token: result.data.token,
-          });
-        } else {
-          // setIsError(true);
-        }
-      })
-      .catch((e) => {
-        // setIsError(true);
-        console.log("register error");
-      });
-  }
 
   return (
     <div className="relative flex flex-col justify-center min-h-screen overflow-hidden">
@@ -66,6 +67,7 @@ function Register(props) {
               value={name}
               name="name"
               onChange={(e) => setName(e.target.value)}
+              disabled={loading}
               id="name"
               className="block w-full px-4 py-2 mt-2 text-purple-700 bg-white border rounded-md focus:border-purple-400 focus:ring-purple-300 focus:outline-none focus:ring focus:ring-opacity-40"
             />
@@ -81,6 +83,7 @@ function Register(props) {
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
+              disabled={loading}
               id="email"
               name="email"
               className="block w-full px-4 py-2 mt-2 text-purple-700 bg-white border rounded-md focus:border-purple-400 focus:ring-purple-300 focus:outline-none focus:ring focus:ring-opacity-40"
@@ -98,6 +101,7 @@ function Register(props) {
               type="tel"
               value={phone}
               onChange={(e) => setPhone(e.target.value)}
+              disabled={loading}
               id="phone"
               name="phone"
               className="block w-full px-4 py-2 mt-2 text-purple-700 bg-white border rounded-md focus:border-purple-400 focus:ring-purple-300 focus:outline-none focus:ring focus:ring-opacity-40"
@@ -112,8 +116,9 @@ function Register(props) {
             </label>
             <input
               type="password"
-              value={pass}
+              value={password}
               onChange={(e) => setPass(e.target.value)}
+              disabled={loading}
               id="password"
               name="password"
               className="block w-full px-4 py-2 mt-2 text-purple-700 bg-white border rounded-md focus:border-purple-400 focus:ring-purple-300 focus:outline-none focus:ring focus:ring-opacity-40"
@@ -128,8 +133,9 @@ function Register(props) {
             </label>
             <input
               type="password"
-              value={password}
+              value={password_confirmation}
               onChange={(e) => setConPass(e.target.value)}
+              disabled={loading}
               id="password"
               name="password"
               className="block w-full px-4 py-2 mt-2 text-purple-700 bg-white border rounded-md focus:border-purple-400 focus:ring-purple-300 focus:outline-none focus:ring focus:ring-opacity-40"
@@ -140,7 +146,8 @@ function Register(props) {
           </a> */}
           <div className="mt-6">
             <button
-              onClick={postRegister}
+              onClick={handleRegister}
+              disabled={loading}
               type="submit"
               className="w-full px-4 py-2 tracking-wide text-white transition-colors duration-200 transform bg-purple-700 rounded-md hover:bg-purple-600 focus:outline-none focus:bg-purple-600"
             >
